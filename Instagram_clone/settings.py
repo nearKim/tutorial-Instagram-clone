@@ -37,6 +37,10 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+
+    # Tutorial apps
+    'instagrams',
+    'comments',
 ]
 
 MIDDLEWARE = [
@@ -49,7 +53,7 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
-ROOT_URLCONF = 'instagram_clone.urls'
+ROOT_URLCONF = 'Instagram_clone.urls'
 
 TEMPLATES = [
     {
