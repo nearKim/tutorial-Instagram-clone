@@ -3,6 +3,8 @@ from django.db import models
 
 
 # 인스타그램 사진을 업로드하면 저장할 경로를 지정한다
+from django.utils.timezone import now
+
 from Instagram_clone.mixins import TimeStampedMixin, Postable
 
 

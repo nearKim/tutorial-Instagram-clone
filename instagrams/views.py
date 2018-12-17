@@ -10,14 +10,18 @@ from instagrams.models import Instagram, InstagramPhoto
 
 class InstagramCreateView(CreateView):
     def form_valid(self, form):
+        # 잠깐 save를 막고 현재 user를 author로 넣어준다
         instagram = form.save(commit=False)
         instagram.author = self.request.user
         instagram.save()
 
+        # 만일 requst로 FILE이 넘어온다면 InstagramPhoto로 간주하고 객체들을 생성한다
         if self.request.FILES:
+            # forms.py에서 images라는 이름으로 FileField를 정의했음을 기억한다
             for f in self.request.FILES.getlist('images'):
                 feed_photo = InstagramPhoto(instagram=instagram, photo=f)
                 feed_photo.save()
+        # 수퍼클래스의 form_valid 구현을 따로 수정할 필요는 없다.
         return super(InstagramCreateView, self).form_valid(form)
 
 
