@@ -2,7 +2,11 @@ from django.urls import path
 
 from .views import (
     InstagramDeleteView,
+    InstagramCreateView,
+    InstagramListView,
+    InstagramUpdateView
 )
+
 app_name = 'instagrams'
 
 urlpatterns = [
