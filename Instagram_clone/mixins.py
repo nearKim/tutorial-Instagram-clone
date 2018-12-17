@@ -14,7 +14,7 @@ class TimeStampedMixin(models.Model):
 class Postable(TimeStampedMixin):
     # 자동으로 생성일시, 수정일시 필드가 추가된다
     # 작성자와 내용을 저장한다
-    author = models.ForeignKey(settings.AUTH_USER_MODEL, verbose_name='작성자')
+    author = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, verbose_name='작성자')
     content = models.CharField(max_length=100, verbose_name='내용')
 
     class Meta:
