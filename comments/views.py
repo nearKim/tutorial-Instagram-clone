@@ -28,7 +28,14 @@ class CommentCreateView(CreateView):
 
 
 class CommentUpdateView(UpdateView):
-    pass
+    model = Comment
+    # TODO: 템플릿 작성
+    template_name_suffix = '_update_form'
+    fields = ['content']
+
+    def get_success_url(self):
+        # 현재 Comment의 absolute_url로 리다이렉트 한다.
+        return Comment.objects.get(pk=self.kwargs['pk']).get_absolute_url()
 
 
 class CommentDeleteView(DeleteView):

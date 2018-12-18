@@ -1,10 +1,12 @@
 from django.shortcuts import render
 
 # Create your views here.
+from django.urls import reverse_lazy
 from django.views.generic import DeleteView, ListView
 from django.views.generic.edit import FormMixin, CreateView, UpdateView
 
 from comments.forms import CommentForm
+from instagrams.forms import InstagramForm
 from instagrams.models import Instagram, InstagramPhoto
 
 
@@ -52,7 +54,20 @@ class InstagramListView(FormMixin, ListView):
 
 
 class InstagramUpdateView(UpdateView):
-    pass
+    model = Instagram
+    form_class = InstagramForm
+    success_url = reverse_lazy('partners:meeting-list')
+
+    def form_valid(self, form):
+        instance = form.save()
+        # 현재 인스타그램과 연결된 사진들을 삭제하고 다시 만들어준다.
+        InstagramPhoto.objects.filter(instagram=instance).delete()
+        if self.request.FILES:
+            for f in self.request.FILES.getlist('images'):
+                feed_photo = InstagramPhoto(instagram=instance, image=f)
+                feed_photo.save()
+
+        return super(InstagramUpdateView, self).form_valid(form)
 
 
 class InstagramDeleteView(DeleteView):
