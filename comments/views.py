@@ -1,3 +1,4 @@
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.http import HttpResponseRedirect
 from django.views.generic import (
     DeleteView,
@@ -5,11 +6,12 @@ from django.views.generic import (
     UpdateView
 )
 
+from Instagram_clone.mixins import ValidAuthorRequiredMixin
 from comments.models import Comment
 from instagrams.models import Instagram
 
 
-class CommentCreateView(CreateView):
+class CommentCreateView(LoginRequiredMixin, CreateView):
     model = Comment
     fields = ['content']
     # TODO: 템플릿 작성
@@ -27,7 +29,7 @@ class CommentCreateView(CreateView):
         return HttpResponseRedirect(self.request.POST.get('next', '/'))
 
 
-class CommentUpdateView(UpdateView):
+class CommentUpdateView(ValidAuthorRequiredMixin, UpdateView):
     model = Comment
     # TODO: 템플릿 작성
     template_name_suffix = '_update_form'
@@ -38,7 +40,7 @@ class CommentUpdateView(UpdateView):
         return Comment.objects.get(pk=self.kwargs['pk']).get_absolute_url()
 
 
-class CommentDeleteView(DeleteView):
+class CommentDeleteView(ValidAuthorRequiredMixin, DeleteView):
     model = Comment
 
     def get_success_url(self):

@@ -1,3 +1,4 @@
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.shortcuts import render
 
 # Create your views here.
@@ -5,12 +6,13 @@ from django.urls import reverse_lazy
 from django.views.generic import DeleteView, ListView
 from django.views.generic.edit import FormMixin, CreateView, UpdateView
 
+from Instagram_clone.mixins import ValidAuthorRequiredMixin
 from comments.forms import CommentForm
 from instagrams.forms import InstagramForm
 from instagrams.models import Instagram, InstagramPhoto
 
 
-class InstagramCreateView(CreateView):
+class InstagramCreateView(LoginRequiredMixin, CreateView):
     def form_valid(self, form):
         # 잠깐 save를 막고 현재 user를 author로 넣어준다
         instagram = form.save(commit=False)
@@ -27,11 +29,11 @@ class InstagramCreateView(CreateView):
         return super(InstagramCreateView, self).form_valid(form)
 
 
-class InstagramListView(FormMixin, ListView):
+class InstagramListView(LoginRequiredMixin, FormMixin, ListView):
     form_class = CommentForm
     paginate_by = 20
     # TODO: 템플릿 작성
-    template_name = 'instagram/feed_list.html'
+    template_name = 'instagrams/feed_list.html'
 
     def get_context_data(self, **kwargs):
         # superclass의 get_context_data를 부른다
@@ -53,7 +55,7 @@ class InstagramListView(FormMixin, ListView):
         return queryset
 
 
-class InstagramUpdateView(UpdateView):
+class InstagramUpdateView(ValidAuthorRequiredMixin, UpdateView):
     model = Instagram
     form_class = InstagramForm
     success_url = reverse_lazy('partners:meeting-list')
@@ -70,5 +72,5 @@ class InstagramUpdateView(UpdateView):
         return super(InstagramUpdateView, self).form_valid(form)
 
 
-class InstagramDeleteView(DeleteView):
+class InstagramDeleteView(ValidAuthorRequiredMixin, DeleteView):
     model = Instagram
