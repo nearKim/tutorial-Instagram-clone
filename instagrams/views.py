@@ -13,6 +13,10 @@ from instagrams.models import Instagram, InstagramPhoto
 
 
 class InstagramCreateView(LoginRequiredMixin, CreateView):
+    model = Instagram
+    form_class = InstagramForm
+    success_url = reverse_lazy('partners:meeting-list')
+
     def form_valid(self, form):
         # 잠깐 save를 막고 현재 user를 author로 넣어준다
         instagram = form.save(commit=False)
