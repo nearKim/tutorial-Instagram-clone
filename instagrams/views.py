@@ -37,7 +37,7 @@ class InstagramListView(LoginRequiredMixin, FormMixin, ListView):
 
     def get_context_data(self, **kwargs):
         # superclass의 get_context_data를 부른다
-        context = super(InstagramListView, super).get_context_data(**kwargs)
+        context = super(InstagramListView, self).get_context_data(**kwargs)
         # CommentForm을 context_data에 넣어준다
         context['comment_form'] = self.get_form()
         return context

@@ -20,4 +20,5 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('instagram/', include('instagrams.urls', namespace='instagrams')),
     path('comments/', include('comments.urls', namespace='comments')),
+    path('accounts/', include('django.contrib.auth.urls')),
 ]
