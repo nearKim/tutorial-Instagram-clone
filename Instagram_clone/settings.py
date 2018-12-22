@@ -41,6 +41,9 @@ INSTALLED_APPS = [
     # Tutorial apps
     'instagrams',
     'comments',
+
+    # 3rd party
+    'crispy_forms',
 ]
 
 MIDDLEWARE = [
@@ -133,3 +136,6 @@ STATICFILES_DIRS = [
 
 # After login
 LOGIN_REDIRECT_URL = '/instagram'
+
+# Crispy Forms
+CRISPY_TEMPLATE_PACK = 'bootstrap3'
