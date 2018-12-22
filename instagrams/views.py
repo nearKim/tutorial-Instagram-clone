@@ -15,7 +15,7 @@ from instagrams.models import Instagram, InstagramPhoto
 class InstagramCreateView(LoginRequiredMixin, CreateView):
     model = Instagram
     form_class = InstagramForm
-    success_url = reverse_lazy('partners:meeting-list')
+    success_url = reverse_lazy('instagrams:feed-list')
 
     def form_valid(self, form):
         # 잠깐 save를 막고 현재 user를 author로 넣어준다
@@ -47,10 +47,10 @@ class InstagramListView(LoginRequiredMixin, FormMixin, ListView):
         return context
 
     def get_queryset(self):
-        # Instagram 객체들을 가져오는데 FK에 대한 joining을 모조리 해서 가져온다.
-        # Reverse relationship을 join해서 가져오기 위해 2번의 prefetch_related를 한다
-        # 마지막으로 단순 FK를 join해서 가져오기 위해 1번의 select_related를 한다
-        # 최신 객체가 가장 위에 올라와야 하고 그다음으로는 최근 수정된 순으로 객체를 뿌려줘야 한다.
+        # Instagram 객체들을 가져오는데 FK를 모조리 join하여 가져온다.
+        # 1. Reverse relationship을 join해서 가져오기 위해 2번의 prefetch_related를 한다
+        # 2. 마지막으로 단순 FK를 join해서 가져오기 위해 1번의 select_related를 한다
+        # 3. 최신 객체가 가장 위에 올라와야 하고 그다음으로는 최근 수정된 순으로 객체를 뿌려줘야 한다.
         queryset = Instagram.objects \
             .prefetch_related('photos') \
             .prefetch_related('comments__author') \
@@ -62,7 +62,7 @@ class InstagramListView(LoginRequiredMixin, FormMixin, ListView):
 class InstagramUpdateView(ValidAuthorRequiredMixin, UpdateView):
     model = Instagram
     form_class = InstagramForm
-    success_url = reverse_lazy('partners:meeting-list')
+    success_url = reverse_lazy('instagrams:feed-list')
 
     def form_valid(self, form):
         instance = form.save()
