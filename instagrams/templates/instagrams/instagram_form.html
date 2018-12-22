@@ -1,0 +1,10 @@
+{% extends "index.html" %}
+{% load crispy_forms_tags %}
+
+{% block content %}
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        {{ form | crispy }}
+        <input type="submit" class="btn btn-primary" value="올리기"/>
+    </form>
+{% endblock %}
