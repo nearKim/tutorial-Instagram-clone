@@ -131,11 +131,17 @@ USE_TZ = True
 
 STATIC_URL = '/templates/'
 STATICFILES_DIRS = [
-    os.path.join(BASE_DIR, 'instagram_clone', 'static'),
+    os.path.join(BASE_DIR, 'Instagram_clone', 'static'),
+]
+
+# Media files
+MEDIA_URL = '/'
+MEDIAFILES_DIRS = [
+    os.path.join(BASE_DIR, 'media'),
 ]
 
 # After login
 LOGIN_REDIRECT_URL = '/instagram'
 
 # Crispy Forms
-CRISPY_TEMPLATE_PACK = 'bootstrap3'
+CRISPY_TEMPLATE_PACK = 'bootstrap4'
