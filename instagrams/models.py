@@ -16,8 +16,8 @@ def get_instagram_photo_path(instance, filename):
 
 
 def rotate_and_resize(photo):
-    # 저장시 가로/세로의 최고 길이는 610px이다.
-    base = 610
+    # 저장시 가로 최고 길이는 614px이다.
+    base = 614
     photo = Image.open(photo)
     photo_format = photo.format
 
@@ -37,15 +37,13 @@ def rotate_and_resize(photo):
     except (AttributeError, KeyError, IndexError):
         # 사진에 exif 태그가 없으면 그대로 진행한다.
         pass
-    # 회전 컨트롤이 완료된 이미지의 크기를 얻는다
+    # 회전 컨트롤이 완료된 이미지의 크기를 얻는다.
     (width, height) = photo.size
 
-    if width < base and height < base:
-        # 너비와 높이 둘다 기준 미만이면 그대로 저장한다
-        factor = 1
-    else:
-        # 너비와 높이 중 큰쪽 대한 비율로 맞춘다.
-        factor = base / width if base / width < base / height else base / height
+    # 사진이 작든 크든 너비를 614px로 맞추기 위한 비율을 구한다.
+    factor = base / width
+
+    # 너비와 높이를 해당 factor를 곱하여 계산한다.
     photo = photo.resize((int(width * factor), int(height * factor)), Image.ANTIALIAS)
     photo_io = BytesIO()
     photo.save(photo_io, photo_format, quality=60)
