@@ -17,10 +17,10 @@
                 <div class="container-fluid">
                     {# 1. 첫번째 row: 단순히 작성자 정보를 나타낸다. #}
                     <div class="row">
-                        <div class="col-xs-9">
+                        <div class="col-9">
                             <span>{{ instagram.author.username }}</span>
                         </div>
-                        <div class="col-xs-3">
+                        <div class="col-3 text-right">
                             {# 드롭다운 옵션들을 넣어줄 컨테이너 #}
                             <div class="dropdown-options">
                                 {# 먼저 아이콘을 뿌려준다. #}
@@ -55,12 +55,12 @@
                     </div>
                     {# 4. 4번째 row: 업로더 정보가 한번 더 나타나고 내용이 들어간다. #}
                     <div class="description-container row">
-                        <div class="uploader col-xs-3">{{ instagram.author.username }}</div>
-                        <div class="content col-xs-9">{{ instagram.content }}</div>
+                        <div class="uploader col-3">{{ instagram.author.username }}</div>
+                        <div class="content col-9">{{ instagram.content }}</div>
                     </div>
                     {# 5. 5번째 row: 현재 인스타그램에 달린 댓글들이 리스트로 표현되어 들어간다. #}
                     <div id="comment-container-div" class="row">
-                        <div class="comments-list col-xs-12">
+                        <div class="comments-list col-12">
                             {% for comment in instagram.comments.all %}
                                 <li class="comment">
                                     <span>{{ comment.author }}</span>
@@ -72,11 +72,11 @@
                     {# 6. 6번째 row: instagram 작성 시간이 현재시간과의 '시간차'로 나타난다. #}
                     {# TODO: 시간차로 나타내기 #}
                     <div class="created-time row">
-                        <div class="col-xs-12">{{ instagram.created }}</div>
+                        <div class="col-12">{{ instagram.created }}</div>
                     </div>
                     {# 7. 7번째 row: 댓글 입력 form이 들어간다#}
                     <div id="comment-creator-div" class="row">
-                        <div class="comments-form col-xs-12">
+                        <div class="comments-form col-12">
                             {# TODO: action을 채워넣어서 댓글이 달리도록 하자. #}
                             <form action="#" method="post">{% csrf_token %}
                                 {{ comment_form | crispy }}
