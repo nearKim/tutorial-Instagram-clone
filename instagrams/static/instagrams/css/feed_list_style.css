@@ -22,3 +22,42 @@
     margin-left: -1px;
     margin-right: -1px;
 }
+
+.dropdown-options {
+    position: relative;
+    display: inline-block;
+}
+
+.dropdown-content {
+    display: none;
+    position: absolute;
+    background-color: #f1f1f1;
+    min-width: 8em;
+    overflow: auto;
+    box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+    z-index: 1;
+}
+
+.show {
+    display: block;
+}
+
+/* Comment field and buttons*/
+.textfield-comment {
+    display: flex;
+    margin-top:10px;
+    padding: 0;
+
+    border: 0;
+    background: 0 0;
+    color: #262626;
+    height: 20px;
+    max-height: 80px;
+    font-size: inherit;
+    outline: 0;
+    resize: none;
+}
+
+.input-comment-create {
+    display: none;
+}
