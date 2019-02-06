@@ -80,7 +80,7 @@
                             {# TODO: action을 채워넣어서 댓글이 달리도록 하자. #}
                             <form action="#" method="post">{% csrf_token %}
                                 {{ comment_form | crispy }}
-                                <input id="input-comment-create" type="submit" class="btn btn-secondary"/>
+                                <input class="input-comment-create" style="display: none;" type="submit" class="btn btn-secondary"/>
                             </form>
                         </div>
                     </div>
