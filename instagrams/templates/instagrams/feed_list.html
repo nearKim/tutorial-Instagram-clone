@@ -27,13 +27,12 @@
                                 <i class="fas fa-ellipsis-v"></i>
                                 <div class="dropdown-content text-center">
                                     {# 수정하기는 단순히 수정 view로 리다이렉트한다 #}
-                                    {# TODO: Complete redirection #}
-                                    <a href="#">수정하기</a>
+                                    <a href="{% url 'instagrams:feed-update' instagram.pk %}">수정하기</a>
                                     {# 삭제하기는 아예 form으로 넘겨서 삭제 확인창 없이 한번에 처리한다. #}
-                                    <form action="#" method="post">{% csrf_token %}
+                                    <form action="{% url 'instagrams:feed-delete' instagram.pk %}" method="post">{% csrf_token %}
                                         {# 어디서 많이 본 패턴이다. #}
                                         <input type="hidden" name="next" value="{{ request.path }}">
-                                        <a href="#" class="delete-instagram">삭제하기</a>
+                                        <input type="submit" onclick="return confirm('정말 삭제하시겠습니까?')" class="delete-instagram btn-link" value="삭제하기"></input>
                                     </form>
                                 </div>
                             </div>

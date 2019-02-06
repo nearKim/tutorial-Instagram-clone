@@ -70,7 +70,7 @@ class InstagramUpdateView(ValidAuthorRequiredMixin, UpdateView):
         InstagramPhoto.objects.filter(instagram=instance).delete()
         if self.request.FILES:
             for f in self.request.FILES.getlist('images'):
-                feed_photo = InstagramPhoto(instagram=instance, image=f)
+                feed_photo = InstagramPhoto(instagram=instance, photo=f)
                 feed_photo.save()
 
         return super(InstagramUpdateView, self).form_valid(form)
@@ -78,3 +78,4 @@ class InstagramUpdateView(ValidAuthorRequiredMixin, UpdateView):
 
 class InstagramDeleteView(ValidAuthorRequiredMixin, DeleteView):
     model = Instagram
+    success_url = reverse_lazy('instagrams:feed-list')
