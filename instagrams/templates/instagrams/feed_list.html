@@ -58,7 +58,7 @@
                         <div class="content col-9">{{ instagram.content }}</div>
                     </div>
                     {# 5. 5번째 row: 현재 인스타그램에 달린 댓글들이 리스트로 표현되어 들어간다. #}
-                    <div id="comment-container-div" class="row">
+                    <div class="comment-container-div" class="row">
                         <div class="comments-list col-12">
                             {% for comment in instagram.comments.all %}
                                 <li class="comment">
@@ -73,7 +73,7 @@
                         <div class="col-12">{{ instagram.timedelta_string }}</div>
                     </div>
                     {# 7. 7번째 row: 댓글 입력 form이 들어간다#}
-                    <div id="comment-creator-div" class="row">
+                    <div class="comment-creator-div row" >
                         <div class="comments-form col-12">
                             {# TODO: action을 채워넣어서 댓글이 달리도록 하자. #}
                             <form action="#" method="post">{% csrf_token %}

@@ -62,14 +62,15 @@ class Instagram(Postable):
         if delta < timedelta(minutes=1):
             return str(delta.seconds) + ' 초 전'
         elif delta < timedelta(hours=1):
-            return str(delta.seconds / 60) + ' 분 전'
+            return str(int(delta.seconds / 60)) + ' 분 전'
         elif delta < timedelta(days=1):
-            return str(delta.seconds / 3600) + ' 시간 전'
+            return str(int(delta.seconds / 3600)) + ' 시간 전'
         elif delta < timedelta(days=7):
-            # TODO: 만일 로컬시간 기준으로 2월 3일 오전 6시에 2월 1일 오후 9시에 작성된 게시글을 볼 경우,
-            #  33시간 전이므로 이를 내림한 '1일 전'으로 표시된다. 일반적으로 이경우 2일 전으로 표시한다.
+            # 날짜만 따로 빼서 날짜간의 차이를 계산한 후 리턴한다.
+            delta = datetime.now(tz=timezone.utc).date() - self.created.date()
             return str(delta.days) + ' 일 전'
         else:
+            # settings.py에 변경한 로컬 시간대를 기준으로 UTC 시간을 변환하여 리턴한다.
             return timezone.localtime(self.created, timezone.get_current_timezone())
 
 
