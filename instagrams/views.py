@@ -1,4 +1,5 @@
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.db.models import Case, When
 from django.shortcuts import render
 
 # Create your views here.
@@ -36,7 +37,6 @@ class InstagramCreateView(LoginRequiredMixin, CreateView):
 class InstagramListView(LoginRequiredMixin, FormMixin, ListView):
     form_class = CommentForm
     paginate_by = 20
-    # TODO: 템플릿 작성
     template_name = 'instagrams/feed_list.html'
 
     def get_context_data(self, **kwargs):
