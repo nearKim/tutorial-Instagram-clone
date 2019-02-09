@@ -1,3 +1,4 @@
+from datetime import datetime, timedelta
 from io import BytesIO
 
 from PIL import Image, ExifTags
@@ -6,6 +7,7 @@ from django.core.files.base import ContentFile
 from django.db import models
 
 # 인스타그램 사진을 업로드하면 저장할 경로를 지정한다
+from django.utils import timezone
 from django.utils.timezone import now
 
 from Instagram_clone.mixins import TimeStampedMixin, Postable
@@ -51,7 +53,24 @@ def rotate_and_resize(photo):
 
 
 class Instagram(Postable):
-    pass
+    @property
+    def timedelta_string(self):
+        # settings에서 Timezone을 'Asia/Seoul'로 변경했을 경우 now()는 로컬타임이지만 DB에 저장된 객체들의 시간은 UTC이다.
+        # 차이값을 구하기위해 timezone을 맞춰준다. 이 때 datetime의 timezone이 아닌 django.utils의 timezone을 사용한다.
+        delta = datetime.now(tz=timezone.utc) - self.created
+
+        if delta < timedelta(minutes=1):
+            return str(delta.seconds) + ' 초 전'
+        elif delta < timedelta(hours=1):
+            return str(delta.seconds / 60) + ' 분 전'
+        elif delta < timedelta(days=1):
+            return str(delta.seconds / 3600) + ' 시간 전'
+        elif delta < timedelta(days=7):
+            # TODO: 만일 로컬시간 기준으로 2월 3일 오전 6시에 2월 1일 오후 9시에 작성된 게시글을 볼 경우,
+            #  33시간 전이므로 이를 내림한 '1일 전'으로 표시된다. 일반적으로 이경우 2일 전으로 표시한다.
+            return str(delta.days) + ' 일 전'
+        else:
+            return timezone.localtime(self.created, timezone.get_current_timezone())
 
 
 class InstagramPhoto(TimeStampedMixin):
