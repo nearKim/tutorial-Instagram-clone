@@ -42,10 +42,19 @@
     display: block;
 }
 
+.add-comment-balloon {
+    margin-left: 15px;
+    padding-left: 0;
+    border: none;
+    background: none;
+    font-size: 30px;
+    cursor:pointer;
+}
+
 /* Comment field and buttons*/
 .textfield-comment {
     display: flex;
-    margin-top:10px;
+    margin-top: 10px;
     padding: 0;
 
     border: 0;
