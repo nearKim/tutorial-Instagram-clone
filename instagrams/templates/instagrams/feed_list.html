@@ -69,9 +69,8 @@
                         </div>
                     </div>
                     {# 6. 6번째 row: instagram 작성 시간이 현재시간과의 '시간차'로 나타난다. #}
-                    {# TODO: 시간차로 나타내기 #}
                     <div class="created-time row">
-                        <div class="col-12">{{ instagram.created }}</div>
+                        <div class="col-12">{{ instagram.timedelta_string }}</div>
                     </div>
                     {# 7. 7번째 row: 댓글 입력 form이 들어간다#}
                     <div id="comment-creator-div" class="row">
