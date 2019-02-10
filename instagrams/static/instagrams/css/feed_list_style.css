@@ -10,6 +10,8 @@
     flex-grow: 1;
     align-items: stretch;
     box-sizing: border-box;
+
+    word-wrap: break-word;
 }
 
 .card {
@@ -48,7 +50,17 @@
     border: none;
     background: none;
     font-size: 30px;
-    cursor:pointer;
+    cursor: pointer;
+}
+.add-comment-balloon:focus {
+    outline: none;
+}
+
+.created-time {
+    font-weight: lighter;
+    font-size: small;
+    padding-top: 10px;
+    padding-bottom: 10px;
 }
 
 /* Comment field and buttons*/

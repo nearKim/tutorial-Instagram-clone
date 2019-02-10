@@ -13,8 +13,8 @@
 
             {# 각 instagram을 실질적으로 나타낼 div #}
             <div class="card">
-                {# Bootstrap내장 container-fluid를 사용한다#}
-                <div class="container-fluid">
+                {# Bootstrap내장 container를 사용한다#}
+                <div class="container">
                     {# 1. 첫번째 row: 단순히 작성자 정보를 나타낸다. #}
                     <div class="row">
                         <div class="col-9">
@@ -53,11 +53,10 @@
                     </div>
                     {# 4. 4번째 row: 업로더 정보가 한번 더 나타나고 내용이 들어간다. #}
                     <div class="description-container row">
-                        <div class="uploader col-3">{{ instagram.author.username }}</div>
-                        <div class="content col-9">{{ instagram.content }}</div>
+                        <div class="content-container col-12"><b>{{ instagram.author.username }}</b> &nbsp; {{ instagram.content }}</div>
                     </div>
                     {# 5. 5번째 row: 현재 인스타그램에 달린 댓글들이 리스트로 표현되어 들어간다. #}
-                    <div class="comment-container-div" class="row">
+                    <div class="comment-container-div row">
                         <div class="comments-list col-12">
                             {% for comment in instagram.comments.all %}
                                 <li class="comment">
