@@ -73,9 +73,9 @@
                     {# 7. 7번째 row: 댓글 입력 form이 들어간다#}
                     <div class="comment-creator-div row" >
                         <div class="comments-form col-12">
-                            {# TODO: action을 채워넣어서 댓글이 달리도록 하자. #}
-                            <form action="#" method="post">{% csrf_token %}
+                            <form action="{% url 'comments:comment-create' feed_pk=instagram.pk %}" method="post">{% csrf_token %}
                                 {{ comment_form | crispy }}
+                                <input type="hidden" name="next" value="{{ request.path }}">
                                 <input class="input-comment-create" style="display: none;" type="submit" class="btn btn-secondary"/>
                             </form>
                         </div>

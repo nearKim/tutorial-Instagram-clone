@@ -36,7 +36,16 @@ $(document).ready(function () {
                 .focus()
         }
     })
-    $("textarea").on('keydown keyup', function () {
+    $('textarea').on('keydown keyup', function () {
         $(this).height(1).height($(this).prop('scrollHeight') + 12);
     });
+    $('textarea').on('keypress', function (event) {
+        if (event.which === 13) {
+            event.preventDefault()
+
+            if ($(this).val() === '') return
+            let form = $(this).closest('form')
+            form.submit()
+        }
+    })
 })
