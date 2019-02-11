@@ -52,6 +52,7 @@
     font-size: 30px;
     cursor: pointer;
 }
+
 .add-comment-balloon:focus {
     outline: none;
 }
@@ -81,4 +82,23 @@
 
 .input-comment-create {
     display: none;
+}
+
+.comment-container-div {
+    padding-top: 10px;
+}
+
+.comment-container-div p {
+    height: fit-content;
+    margin-bottom: auto;
+    font-size: calc(0.3vw + 12px);
+}
+
+.comment-button-container form {
+    display: inline-block;
+}
+
+.comment-button-container form button {
+    padding: 0;
+    font-size: smaller;
 }
