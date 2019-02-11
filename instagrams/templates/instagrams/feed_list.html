@@ -32,7 +32,7 @@
                                     <form action="{% url 'instagrams:feed-delete' instagram.pk %}" method="post">{% csrf_token %}
                                         {# 어디서 많이 본 패턴이다. #}
                                         <input type="hidden" name="next" value="{{ request.path }}">
-                                        <input type="submit" onclick="return confirm('정말 삭제하시겠습니까?')" class="delete-instagram btn-link" value="삭제하기"></input>
+                                        <input type="submit" onclick="return confirm('정말 삭제하시겠습니까?')" class="delete-instagram btn-link" value="삭제하기">
                                     </form>
                                 </div>
                             </div>
@@ -55,16 +55,9 @@
                     <div class="description-container row">
                         <div class="content-container col-12"><b>{{ instagram.author.username }}</b> &nbsp; {{ instagram.content }}</div>
                     </div>
-                    {# 5. 5번째 row: 현재 인스타그램에 달린 댓글들이 리스트로 표현되어 들어간다. #}
+                    {# 5. 5번째 row: 현재 인스타그램에 달린 댓글들이 포함된다다. #}
                     <div class="comment-container-div row">
-                        <div class="comments-list col-12">
-                            {% for comment in instagram.comments.all %}
-                                <li class="comment">
-                                    <span>{{ comment.author }}</span>
-                                    <span>{{ comment.content }}</span>
-                                </li>
-                            {% endfor %}
-                        </div>
+                        {% include 'comments/comments_container.html' with comments=instagram.comments %}
                     </div>
                     {# 6. 6번째 row: instagram 작성 시간이 현재시간과의 '시간차'로 나타난다. #}
                     <div class="created-time row">

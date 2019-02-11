@@ -1,4 +1,38 @@
+// Django에서 AJAX로 form post를 할 때 csrf token을 발급해주는 script
+// using jQuery
+function getCookie(name) {
+    var cookieValue = null;
+    if (document.cookie && document.cookie != '') {
+        var cookies = document.cookie.split(';');
+        for (var i = 0; i < cookies.length; i++) {
+            var cookie = jQuery.trim(cookies[i]);
+            // Does this cookie string begin with the name we want?
+            if (cookie.substring(0, name.length + 1) == (name + '=')) {
+                cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                break;
+            }
+        }
+    }
+    return cookieValue;
+}
+
+function csrfSafeMethod(method) {
+    // these HTTP methods do not require CSRF protection
+    return (/^(GET|HEAD|OPTIONS|TRACE)$/.test(method));
+}
+
+
 $(document).ready(function () {
+
+    var csrftoken = getCookie('csrftoken');
+    $.ajaxSetup({
+        beforeSend: function (xhr, settings) {
+            if (!csrfSafeMethod(settings.type) && !this.crossDomain) {
+                xhr.setRequestHeader("X-CSRFToken", csrftoken);
+            }
+        }
+    });
+
     $(window).on('click', function (event) {
         // 0. 공통 변수 초기화
         let target = $(event.target)
@@ -15,7 +49,7 @@ $(document).ready(function () {
             dropdownArr.map(d => {
                 if (d.classList.contains('show')) d.classList.remove('show')
             })
-        } else if (target.hasClass('fa-ellipsis-v"')) {
+        } else if (target.hasClass('fa-ellipsis-v')) {
             //클릭한게 더보기 icon인 경우
             if (targetDropdown.classList.contains('show')) {
                 // 만일 클릭한 icon으로부터 가장 가까운 dropdown-content가 열려있으면 단순히 닫아준다.
@@ -36,16 +70,40 @@ $(document).ready(function () {
                 .focus()
         }
     })
+
+    // 댓글창 사이즈 자동조절
     $('textarea').on('keydown keyup', function () {
         $(this).height(1).height($(this).prop('scrollHeight') + 12);
     });
+    // 댓글 엔터키 입력
     $('textarea').on('keypress', function (event) {
         if (event.which === 13) {
             event.preventDefault()
+            let content = $(this).val()
+            if (content === '') return
 
-            if ($(this).val() === '') return
-            let form = $(this).closest('form')
-            form.submit()
+            let url = $(this).closest('form').attr('action')
+
+            // input을 비워준다
+            $(this).val('')
+
+            $.ajax({
+                url: url,
+                method: 'POST',
+                data: {
+                    'content': content
+                },
+                success: (data) => {
+                    // 현재 textarea로부터 가장 가까운 omment-container-div 를 찾고 리턴된 데이터로 교체한다
+                    $(this).parents('.comment-creator-div')
+                        .siblings('.comment-container-div')
+                        .html(data)
+                },
+                fail: (data) => {
+                    alert('댓글 등록에 실패하였습니다. 다시 시도해 주세요.')
+                    console.log(data)
+                }
+            })
         }
     })
 })

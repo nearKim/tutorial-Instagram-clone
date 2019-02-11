@@ -1,5 +1,6 @@
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.http import HttpResponseRedirect
+from django.shortcuts import get_object_or_404, render
 from django.views.generic import (
     DeleteView,
     CreateView,
@@ -11,10 +12,10 @@ from comments.models import Comment
 from instagrams.models import Instagram
 
 
-class CommentCreateView(LoginRequiredMixin, CreateView):
+class CommentCreateAjaxView(LoginRequiredMixin, CreateView):
+    # 댓글 내용과 분기점을 받아서 적절한 FK를 찾아 연결하고 댓글 목록을 AJAX로 업데이트한다.
     model = Comment
     fields = ['content']
-    # TODO: 템플릿 작성
     template_name = 'comments/comments_container.html'
 
     def form_valid(self, form):
@@ -23,15 +24,22 @@ class CommentCreateView(LoginRequiredMixin, CreateView):
         # 현재 request를 요청한 user를 댓글의 작성자로 넣어준다
         comment.author = self.request.user
         # 현재 댓글이 달릴 instagram 객체의 pk는 routing rule의 <int:feed_pk>로 넘어온다
-        comment.instagram = Instagram.objects.get(pk=self.kwargs.get('feed_pk'))
+        instagram = get_object_or_404(Instagram, pk=self.kwargs.get('feed_pk'))
+        comment.instagram = instagram
         comment.save()
-        # 댓글을 생성한 이후 댓글을 달고 있었던 request url로 리다이렉트한다.
-        return HttpResponseRedirect(self.request.POST.get('next', '/'))
+
+        context = {
+            'comments': Comment.objects
+                .select_related('author')
+                .filter(instagram=instagram)
+                .order_by('created')
+        }
+
+        return render(self.request, 'comments/comments_container.html', context)
 
 
 class CommentUpdateView(ValidAuthorRequiredMixin, UpdateView):
     model = Comment
-    # TODO: 템플릿 작성
     template_name_suffix = '_update_form'
     fields = ['content']
 
